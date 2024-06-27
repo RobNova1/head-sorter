@@ -3,30 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Player</title>
+    <title>Top Players</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        .top-player {
+            text-align: center;
+        }
+        .first-place {
+            margin-bottom: 20px;
+        }
+        .second-third-wrapper,
+        .fourth-fifth-sixth-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .second-place,
+        .fourth-place {
+            margin-right: 20px;
+        }
+        .third-place,
+        .sixth-place {
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Most Recently Modified Player</h1>
-        <div class="card mt-3">
-            <img id="player-image" src="" class="card-img-top" alt="Player Image">
-            <div class="card-body">
-                <h5 class="card-title" id="player-name"></h5>
-                <p class="card-text" id="player-description"></p>
-                <p class="card-text"><small class="text-muted" id="player-modified-at"></small></p>
+    <div class="container top-player">
+        <h1 class="mt-5">Top 6 Players</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="card first-place">
+                    <img id="first-player-image" src="" class="card-img-top" alt="First Player Image">
+                    <div class="card-body">
+                        <h5 class="card-title" id="first-player-name"></h5>
+                        <p class="card-text" id="first-player-description"></p>
+                        <p class="card-text"><small class="text-muted" id="first-player-modified-at"></small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row second-third-wrapper">
+            <div class="col-md-4 d-flex justify-content-end">
+                <div class="card second-place">
+                    <img id="second-player-image" src="" class="card-img-top" alt="Second Player Image">
+                    <div class="card-body">
+                        <h5 class="card-title" id="second-player-name"></h5>
+                        <p class="card-text" id="second-player-description"></p>
+                        <p class="card-text"><small class="text-muted" id="second-player-modified-at"></small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex justify-content-start">
+                <div class="card third-place">
+                    <img id="third-player-image" src="" class="card-img-top" alt="Third Player Image">
+                    <div class="card-body">
+                        <h5 class="card-title" id="third-player-name"></h5>
+                        <p class="card-text" id="third-player-description"></p>
+                        <p class="card-text"><small class="text-muted" id="third-player-modified-at"></small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row fourth-fifth-sixth-wrapper">
+            <div class="col-md-4 d-flex justify-content-end">
+                <div class="card fourth-place">
+                    <img id="fourth-player-image" src="" class="card-img-top" alt="Fourth Player Image">
+                    <div class="card-body">
+                        <h5 class="card-title" id="fourth-player-name"></h5>
+                        <p class="card-text" id="fourth-player-description"></p>
+                        <p class="card-text"><small class="text-muted" id="fourth-player-modified-at"></small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="card fifth-place">
+                    <img id="fifth-player-image" src="" class="card-img-top" alt="Fifth Player Image">
+                    <div class="card-body">
+                        <h5 class="card-title" id="fifth-player-name"></h5>
+                        <p class="card-text" id="fifth-player-description"></p>
+                        <p class="card-text"><small class="text-muted" id="fifth-player-modified-at"></small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex justify-content-start">
+                <div class="card sixth-place">
+                    <img id="sixth-player-image" src="" class="card-img-top" alt="Sixth Player Image">
+                    <div class="card-body">
+                        <h5 class="card-title" id="sixth-player-name"></h5>
+                        <p class="card-text" id="sixth-player-description"></p>
+                        <p class="card-text"><small class="text-muted" id="sixth-player-modified-at"></small></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch('/api/top-player')
+            fetch('/api/top-players')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('player-image').src = data.image;
-                    document.getElementById('player-name').textContent = data.name;
-                    document.getElementById('player-description').textContent = data.description;
-                    document.getElementById('player-modified-at').textContent = `Last modified: ${data.modified_at}`;
+                    if (data.length > 0) {
+                        document.getElementById('first-player-image').src = data[0].image_url;
+                        document.getElementById('first-player-name').textContent = data[0].name;
+                        document.getElementById('first-player-description').textContent = data[0].description;
+                        document.getElementById('first-player-modified-at').textContent = `Last modified: ${data[0].modified_at}`;
+                    }
+                    if (data.length > 1) {
+                        document.getElementById('second-player-image').src = data[1].image_url;
+                        document.getElementById('second-player-name').textContent = data[1].name;
+                        document.getElementById('second-player-description').textContent = data[1].description;
+                        document.getElementById('second-player-modified-at').textContent = `Last modified: ${data[1].modified_at}`;
+                    }
+                    if (data.length > 2) {
+                        document.getElementById('third-player-image').src = data[2].image_url;
+                        document.getElementById('third-player-name').textContent = data[2].name;
+                        document.getElementById('third-player-description').textContent = data[2].description;
+                        document.getElementById('third-player-modified-at').textContent = `Last modified: ${data[2].modified_at}`;
+                    }
+                    if (data.length > 3) {
+                        document.getElementById('fourth-player-image').src = data[3].image_url;
+                        document.getElementById('fourth-player-name').textContent = data[3].name;
+                        document.getElementById('fourth-player-description').textContent = data[3].description;
+                        document.getElementById('fourth-player-modified-at').textContent = `Last modified: ${data[3].modified_at}`;
+                    }
+                    if (data.length > 4) {
+                        document.getElementById('fifth-player-image').src = data[4].image_url;
+                        document.getElementById('fifth-player-name').textContent = data[4].name;
+                        document.getElementById('fifth-player-description').textContent = data[4].description;
+                        document.getElementById('fifth-player-modified-at').textContent = `Last modified: ${data[4].modified_at}`;
+                    }
+                    if (data.length > 5) {
+                        document.getElementById('sixth-player-image').src = data[5].image_url;
+                        document.getElementById('sixth-player-name').textContent = data[5].name;
+                        document.getElementById('sixth-player-description').textContent = data[5].description;
+                        document.getElementById('sixth-player-modified-at').textContent = `Last modified: ${data[5].modified_at}`;
+                    }
                 })
                 .catch(error => console.error('Error fetching data:', error));
         });

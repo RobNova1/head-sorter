@@ -73,7 +73,7 @@ app.get('/get-team-members', (req, res) => {
 
 // Route to serve index.html (assuming it's your home page)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'bootstrap.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Route to serve team.html

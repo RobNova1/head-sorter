@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Player</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Most Recently Modified Player</h1>
+        <div class="card mt-3">
+            <img id="player-image" src="" class="card-img-top" alt="Player Image">
+            <div class="card-body">
+                <h5 class="card-title" id="player-name"></h5>
+                <p class="card-text" id="player-description"></p>
+                <p class="card-text"><small class="text-muted" id="player-modified-at"></small></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/api/top-player')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('player-image').src = data.image;
+                    document.getElementById('player-name').textContent = data.name;
+                    document.getElementById('player-description').textContent = data.description;
+                    document.getElementById('player-modified-at').textContent = `Last modified: ${data.modified_at}`;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

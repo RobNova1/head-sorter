@@ -1,0 +1,13 @@
+/* Custom styles */
+.features .card {
+    transition: transform 0.2s;
+}
+
+.features .card:hover {
+    transform: translateY(-5px);
+}
+
+footer {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}

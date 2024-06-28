@@ -14,24 +14,24 @@ const PASSWORD = process.env.PASSWORD;
 console.log(`USERNAME: ${USERNAME}, PASSWORD: ${PASSWORD}`);
 
 // Initialize and connect to the SQLite database
-const db = new sqlite3.Database('./database.db', (err) => {
-    if (err) {
-        console.error('Error connecting to database:', err.message);
-    } else {
-        console.log('Connected to the SQLite database.');
-        db.run(`CREATE TABLE IF NOT EXISTS team (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            role TEXT NOT NULL
-        )`, (err) => {
-            if (err) {
-                console.error('Error creating table:', err.message);
-            } else {
-                console.log('Table "team" is ready.');
-            }
-        });
-    }
-});
+// const db = new sqlite3.Database('./database.db', (err) => {
+//     if (err) {
+//         console.error('Error connecting to database:', err.message);
+//     } else {
+//         console.log('Connected to the SQLite database.');
+//         db.run(`CREATE TABLE IF NOT EXISTS team (
+//             id INTEGER PRIMARY KEY AUTOINCREMENT,
+//             name TEXT NOT NULL,
+//             role TEXT NOT NULL
+//         )`, (err) => {
+//             if (err) {
+//                 console.error('Error creating table:', err.message);
+//             } else {
+//                 console.log('Table "team" is ready.');
+//             }
+//         });
+//     }
+// });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -45,8 +45,8 @@ function auth(req, res, next) {
     next();
 }
 
-app.use(auth);
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(auth);
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to add a new team member
 app.post('/add-team-member', (req, res) => {
@@ -99,18 +99,65 @@ app.listen(PORT, () => {
 // const app = express();
 // const port = 3000;
 
-app.get('/data', (req, res) => {
-    db.all("SELECT house, COUNT(FULLNAME) as count FROM house_mock GROUP BY house", (err, rows) => {
-        if (err) {
-      res.status(500).send(err.message);
-      return;
-    }
-    res.json(rows);
-  });
-});
+// app.get('/data', (req, res) => {
+//     db.all("SELECT house, COUNT(FULLNAME) as count FROM house_mock GROUP BY house", (err, rows) => {
+//         if (err) {
+//       res.status(500).send(err.message);
+//       return;
+//     }
+//     res.json(rows);
+//   });
+// });
 
 // app.use(express.static('public'));
 
 // app.listen(port, () => {
 //   console.log(`Server running at http://localhost:${port}/`);
 // });
+// Connect to SQLite database
+
+// Connect to SQLite database
+const db = new sqlite3.Database('harvey_house.db', (err) => {
+    if (err) {
+      console.error('Error opening database:', err.message);
+    } else {
+      console.log('Connected to the SQLite database.');
+    }
+  });
+  // Route to fetch and display joined data
+app.get('/data', (req, res) => {
+    const { teacher } = req.query;
+    let query = `
+      SELECT house.house_name, house.student_id, house.teacher, house.points, house.last_modified, 
+             student.student_name, student.image_url
+      FROM house
+      INNER JOIN student ON house.student_id = student.student_id
+    `;
+    
+    if (teacher) {
+      query += ` WHERE house.teacher = ?`;
+    }
+    
+    db.all(query, teacher ? [teacher] : [], (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json(rows);
+    });
+  });
+  
+  // Route to fetch distinct teacher names
+  app.get('/teachers', (req, res) => {
+    const query = `
+      SELECT DISTINCT teacher FROM house
+    `;
+    
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json(rows);
+    });
+  });

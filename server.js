@@ -254,6 +254,17 @@ app.get('/teacher_roster.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'teacher_roster.html'));
 });
 
+
+app.get('/bar', (req, res) => {
+  db.all("SELECT house_name, COUNT(points) as count FROM house GROUP BY house_name", (err, rows) => {
+      if (err) {
+    res.status(500).send(err.message);
+    return;
+  }
+  res.json(rows);
+});
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

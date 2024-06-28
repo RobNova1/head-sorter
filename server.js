@@ -179,7 +179,7 @@ const db = new sqlite3.Database('harvey_house.db', (err) => {
 });
 
 // Serve static files (including teacher_roster.html)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,)));
 
 // Route to fetch and display filtered data
 app.get('/data', (req, res) => {
@@ -243,8 +243,14 @@ app.get('/teachers', (req, res) => {
   });
 });
 
-// Route to serve teacher_roster.html
+// Route to serve index.html
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname));
+});
+
+// Route to serve teacher_roster.html
+app.get('/teacher_roster.html', (req, res) => {
+  // Serve teacher_roster.html when '/teacher_roster.html' is accessed
   res.sendFile(path.join(__dirname, 'teacher_roster.html'));
 });
 

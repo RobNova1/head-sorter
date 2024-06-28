@@ -185,7 +185,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/data', (req, res) => {
   const { teacher } = req.query;
   let query = `
-    SELECT house.student_id, house.points, house.last_modified, 
+    SELECT house.student_id, house.points, house.last_modified, house.house_name,
            student.student_name
     FROM house
     INNER JOIN student ON house.student_id = student.student_id

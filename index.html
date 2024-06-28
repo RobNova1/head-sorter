@@ -31,6 +31,7 @@
       <tr>
         <th>Student Name</th>
         <th>Student ID</th>
+        <th>House Name</th>
         <th>Points</th>
         <th>Last Modified</th>
         <th>Actions</th>
@@ -62,6 +63,7 @@
               tr.innerHTML = `
                 <td>${row.student_name}</td>
                 <td>${row.student_id}</td>
+                <td>${row.house_name}</td>
                 <td>${row.points}</td>
                 <td>${row.last_modified}</td>
                 <td><button onclick="addPoint(${row.student_id})">Add Point</button></td>

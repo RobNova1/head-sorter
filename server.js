@@ -256,7 +256,7 @@ app.get('/teacher_roster.html', (req, res) => {
 
 
 app.get('/bar', (req, res) => {
-  db.all("SELECT house_name, COUNT(points) as count FROM house GROUP BY house_name", (err, rows) => {
+  db.all("SELECT house_name, sum(points) as count FROM house GROUP BY house_name", (err, rows) => {
       if (err) {
     res.status(500).send(err.message);
     return;

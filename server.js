@@ -265,6 +265,26 @@ app.get('/bar', (req, res) => {
 });
 });
 
+// // API endpoint to get the top three most recently modified players
+// app.get('/api/top-players', (req, res) => {
+//   db.all('SELECT * FROM players ORDER BY modified_at DESC LIMIT 6', (err, rows) => {
+//       if (err) {
+//           return res.status(500).send('Database error');
+//       }
+//       res.json(rows);
+//   });
+// });
+
+// API endpoint to get the top three most recently modified players
+app.get('/api/top-players', (req, res) => {
+  db.all('SELECT house_name, sum(points) as count FROM house GROUP BY house_name', (err, rows) => {
+      if (err) {
+          return res.status(500).send('Database error');
+      }
+      res.json(rows);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

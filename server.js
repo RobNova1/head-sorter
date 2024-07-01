@@ -276,12 +276,56 @@ app.get('/bar', (req, res) => {
 // });
 
 // API endpoint to get the top three most recently modified players
-app.get('/api/top-players', (req, res) => {
+app.get('/api/top-players2', (req, res) => {
   db.all('SELECT house_name, sum(points) as count FROM house GROUP BY house_name', (err, rows) => {
       if (err) {
           return res.status(500).send('Database error');
       }
       res.json(rows);
+  });
+});
+
+
+// Sample data for top players
+const topPlayers = [
+  { house: 'slytherin', name: 'Draco Malfoy', description: 'Top student in Slytherin.', modified_at: '2024-06-28T12:00:00Z' },
+  { house: 'gryffindor', name: 'Harry Potter', description: 'Top student in Gryffindor.', modified_at: '2024-06-28T12:00:00Z' },
+  { house: 'hufflepuff', name: 'Cedric Diggory', description: 'Top student in Hufflepuff.', modified_at: '2024-06-28T12:00:00Z' },
+  { house: 'ravenclaw', name: 'Luna Lovegood', description: 'Top student in Ravenclaw.', modified_at: '2024-06-28T12:00:00Z' },
+  { house: 'beauxbatons', name: 'Fleur Delacour', description: 'Top student in Beauxbatons.', modified_at: '2024-06-28T12:00:00Z' },
+  { house: 'durmstrang', name: 'Viktor Krum', description: 'Top student in Durmstrang.', modified_at: '2024-06-28T12:00:00Z' }
+];
+
+
+// API endpoint to get top players
+app.get('/api/top-players', (req, res) => {
+  res.json(topPlayers);
+});
+
+// API endpoint to get joined data
+app.get('/api/joined_data', (req, res) => {
+  const sql = `
+    SELECT 
+      house.house_name, 
+      house.student_id, 
+      house.teacher, 
+      house.points, 
+      house.last_modified, 
+      student.student_name, 
+      student.image_url
+    FROM 
+      house
+    INNER JOIN 
+      student 
+    ON 
+      house.student_id = student.student_id
+  `;
+
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+    res.json(rows);
   });
 });
 
